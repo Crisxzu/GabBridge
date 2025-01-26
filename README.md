@@ -79,6 +79,9 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+N'oubliez pas de consulter le fichier `gab/settings.py` pour adapter le projet en fonction de vos besoins.
+Par exemple, modifier les hôtes autorisés et l'hôte de confiance pour le CRSF.
+
 ## Fonctionnement
 
 Avec le compte super utilisateur, vous pouvez accéder au panel d'administration à `/admin`.<br/>
