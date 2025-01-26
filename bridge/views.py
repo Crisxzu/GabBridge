@@ -15,8 +15,7 @@ def index(request):
     try:
         client = Client.objects.get(pk=user.pk)
         bank_account = client.bank_account
-        transactions = bank_account.transactions.all()[:5] if bank_account else []
-        transactions.reverse()
+        transactions = bank_account.transactions.all().order_by('-creation_date')[:5] if bank_account else []
         context = {
             'client': client,
             "bank_account": bank_account,
