@@ -1,0 +1,67 @@
+{% extends "bridge/base.html" %}
+{% block title %} Gab - Index {% endblock %}
+{% block content %}
+    {% if bank_account %}
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Bienvenue {{ client.get_full_name }}</h2>
+                    <h3>Solde courant : {{ bank_account.balance }} FCFA</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <div class="d-grid gap-3">
+                        <a class="btn btn-primary btn-lg p-2" href="{% url 'bridge:deposit' %}">
+                            Dépôt
+                        </a>
+
+                        <a class="btn btn-primary btn-lg p-2" href="{% url 'bridge:withdraw' %}">
+                            Retrait
+                        </a>
+
+                        <a class="btn btn-primary btn-lg p-2" href="{% url "bridge:transactions-history" %}">
+                            Historique
+                        </a>
+
+                        <a class="btn btn-danger btn-lg p-2" href="{% url "bridge:logout" %}">
+                            Se déconnecter
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="mb-0">Historiques des 5 dernières transactions</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                {% if transactions %}
+                                    {% for transaction in transactions %}
+                                        <a href="{% url 'bridge:transaction' transaction.pk %}" class="text-decoration-none">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="mb-1">{{ transaction.label }}</h5>
+                                                    <strong>{{ transaction.amount }} FCFA</strong>
+                                                </div>
+                                                <small>Date : {{ transaction.creation_date }}</small>
+                                            </div>
+                                        </a>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="card-text">Aucune transaction effectué pour l'heure</p>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p> Houla, il semblerait que vous n'ayez pas de compte bancaire enregistré 🥲</p>
+    {% endif %}
+
+{% endblock %}

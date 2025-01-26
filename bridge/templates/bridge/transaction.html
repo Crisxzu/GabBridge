@@ -1,0 +1,29 @@
+{% extends "bridge/base.html" %}
+{% block title %}Gab - Détail sur transaction {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h4 class="mb-4">{{ transaction.label }}</h4>
+
+                        <div class="mb-3">
+                            <p class="mb-1">Date : {{ transaction.creation_date }}</p>
+                            <p class="mb-1">Montant : {{ transaction.amount }} FCFA</p>
+                            <p class="mb-1">Type : {{ transaction.get_type_display }}</p>
+                            <p class="mb-1">Solde après transaction : {{ transaction.balance_after }} FCFA</p>
+                            <p class="mb-1">Statut : {{ transaction.get_status_display }}</p>
+                            <p class="mb-1">Référence : {{ transaction.reference }}</p>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'bridge:index' %}" class="btn btn-primary">Retour page d'accueil</a>
+                            <a href="{% url 'bridge:transactions-history' %}" class="btn btn-secondary">Historique</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,74 @@
+kind: pipeline
+name: test-deploy
+
+trigger:
+  branch:
+    - main
+
+steps:
+  - name: check_project
+    image: own-python
+    pull: never
+    commands:
+      - pip install -r requirements.txt
+      - echo "Checking if project is ready for deployment..."
+      - python manage.py check --deploy
+      - echo "Project is ready for deployment."
+
+---
+kind: pipeline
+type: ssh
+name: pull_repo
+
+server:
+  host:
+    from_secret: server_host
+  user:
+    from_secret: server_user
+  ssh_key:
+    from_secret: server_ssh_key
+
+
+trigger:
+  branch:
+    - main
+
+
+steps:
+  - name: pull_repo
+    commands:
+      - cd /home/dazu-portfolio/dazu-portfolio
+      - git stash
+      - git pull origin main
+      - ./start.sh
+
+
+depends_on:
+- test-deploy
+
+---
+
+kind: pipeline
+type: ssh
+name: restart_uwsgi
+
+server:
+  host:
+    from_secret: server_host
+  user:
+    from_secret: server_uwsgi_user
+  ssh_key:
+    from_secret: server_uwsgi_ssh_key
+
+trigger:
+  branch:
+    - main
+
+steps:
+  - name: restart_uwsgi
+    commands:
+      - sudo systemctl restart uwsgi
+
+depends_on:
+- pull_repo
+

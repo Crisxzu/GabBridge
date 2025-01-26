@@ -1,0 +1,101 @@
+{% extends "bridge/base.html" %}
+{% block title %}Gab - Historique de transactions {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+                <h2>Historique des transactions</h2>
+                <h4>Solde courant : {{ bank_account.balance }} FCFA</h4>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-12 mb-3">
+                        <input type="text" name="search" class="form-control" placeholder="Recherche par intitulé" value="{{ request.GET.search }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="date" name="date_start" class="form-control" placeholder="Date début" value="{{ request.GET.date_start }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="date" name="date_end" class="form-control" placeholder="Date fin" value="{{ request.GET.date_end }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="number" name="amount" class="form-control" placeholder="Montant" value="{{ request.GET.amount }}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="order_by" class="form-select">
+                            <option value="date">Trier par date</option>
+                            <option value="amount">Trier par montant</option>
+                            <option value="status">Trier par statut</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Intitulé</th>
+                        <th>Montant</th>
+                        <th>Type</th>
+                        <th>Statut</th>
+                        <th>Référence</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                        <tr onclick="location.href='{% url 'bridge:transaction' transaction.pk %}'" >
+                            <td>{{ transaction.creation_date }}</td>
+                            <td>{{ transaction.label }}</td>
+                            <td>{{ transaction.amount }} FCFA</td>
+                            <td>{{ transaction.get_type_display }}</td>
+                            <td>{{ transaction.get_status_display }}</td>
+                            <td>{{ transaction.reference }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if transactions.has_other_pages %}
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% if transactions.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ transactions.previous_page_number }}">Précédent</a>
+                </li>
+                {% endif %}
+
+                {% for i in transactions.paginator.page_range %}
+                <li class="page-item {% if transactions.number == i %}active{% endif %}">
+                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+                {% endfor %}
+
+                {% if transactions.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ transactions.next_page_number }}">Suivant</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{% url 'bridge:index' %}" class="btn btn-primary">Retour page d'accueil</a>
+        </div>
+    </div>
+{% endblock %}
