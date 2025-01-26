@@ -27,8 +27,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-l^_3p^u6!6nxov
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', False)
 LOGIN_URL = os.environ.get('DJANGO_LOGIN_URL', 'bridge:login')
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = ["gabbridge.dazu.fr", "localhost", "127.0.0.1"]
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ["https://gabbridge.dazu.fr"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -130,10 +132,20 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_PRELOAD = True
 
 if not DEBUG:
     SESSION_EXPIRE_AT_BROWSER_CLOSE = True
