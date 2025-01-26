@@ -6,6 +6,7 @@ from .models import BankAccount, Transaction, Client, StaffUser, hash_pin
 
 
 class ClientCreationForm(forms.ModelForm):
+    pin = forms.CharField(max_length=4, widget=forms.PasswordInput, validators=[RegexValidator(regex=r'^\d{4}$')])
     class Meta:
         model = Client
         fields = ('card_number', 'pin', 'first_name', 'last_name', 'email')

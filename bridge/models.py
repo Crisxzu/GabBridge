@@ -43,6 +43,8 @@ class Client(BridgeUser):
 
 
     def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = self.card_number
         self.is_staff = False
         super().save(*args, **kwargs)
 
