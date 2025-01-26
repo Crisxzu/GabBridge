@@ -28,7 +28,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-l^_3p^u6!6nxov
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
 LOGIN_URL = os.environ.get('DJANGO_LOGIN_URL', 'bridge:login')
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["gabbridge.dazu.fr", "localhost", "127.0.0.1"]
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ["https://gabbridge.dazu.fr"]
 # Application definition
 
 INSTALLED_APPS = [
