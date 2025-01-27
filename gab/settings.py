@@ -29,7 +29,8 @@ DEBUG = bool(os.environ.get('DJANGO_DEBUG', False))
 LOGIN_URL = os.environ.get('DJANGO_LOGIN_URL', 'bridge:login')
 
 ALLOWED_HOSTS = ["gabbridge.dazu.fr", "localhost", "127.0.0.1"]
-CSRF_TRUSTED_ORIGINS = ["https://gabbridge.dazu.fr"]
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = ["https://gabbridge.dazu.fr"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -146,7 +147,7 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
 
-
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 300
-SESSION_SAVE_EVERY_REQUEST = True
+if not DEBUG:
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+    SESSION_COOKIE_AGE = 300
+    SESSION_SAVE_EVERY_REQUEST = True
