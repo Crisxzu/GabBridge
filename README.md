@@ -12,6 +12,11 @@ inclure une authentification simulée via un numéro de carte et un code PIN.
 La base de données utilisée est **PostgreSQL**.<br/>
 **Boostrap 5** a été utilisée pour le frontend.
 
+Si jamais, vous souhaitez le tester en live, il est accessible à ce lien : https://gabbridge.dazu.fr/ <br/>
+Pour s'authentifier, voici les identifants de test : <br/>
+Numéro de compte : 0744980859 <br/>
+PIN : 9230
+
 ## Structure du projet
 
 ```
