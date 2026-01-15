@@ -25,7 +25,7 @@ env_path = load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-l^_3p^u6!6nxovb#8y_)a1@r_kd!t57zujtk&zc8$4jbooa&_5')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', False)))
+DEBUG = bool(int(os.environ.get('DJANGO_DEBUG', 0)))
 LOGIN_URL = os.environ.get('DJANGO_LOGIN_URL', 'bridge:login')
 
 ALLOWED_HOSTS = ["gabbridge.dazu.fr", "localhost", "127.0.0.1"]
@@ -146,6 +146,9 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    USE_X_FORWARDED_HOST = True
+    USE_X_FORWARDED_PORT = True
 
 if not DEBUG:
     SESSION_EXPIRE_AT_BROWSER_CLOSE = True
